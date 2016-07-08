@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Новый пост</title>
+    <style type="text/css">
+        .post-textarea{
+            max-width: 1000px;
+            max-height: 1000px;
+            width: 500px;
+            height: 500px;
+            min-width: 100px;
+            min-height: 100px;
+        }
+        .post-inputtext{
+            width: 1000px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <h:body>
+        <h:form>
+            <h1>Добавление нового поста</h1>
+            <h:outputText value="#{addnewpost.msgAddPost}"/><p></p>
+            Тема: <h:inputText value="#{addnewpost.title}" styleClass="post-inputtext" maxlength="128"/><p></p>
+            <h:inputTextarea value="#{addnewpost.body}" maxlength="10000" styleClass="post-textarea"/><p></p>
+            <h:commandButton value="Добавить пост" action="#{addnewpost.addNewPost(addnewpost.title,addnewpost.body)}"/>
+            <h:commandButton value="Отмена" action="mainpage" style="margin-left: 20px;"/>
+        </h:form>
+    </h:body>
+
+</h:body>
+
+</html>

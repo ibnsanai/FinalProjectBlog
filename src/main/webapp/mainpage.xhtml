@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="resources/css/style.css" type="text/css" />
+</h:head>
+    <h:body>
+        <div id="wrap">
+            <table id="header-table">
+                <tr>
+                    <th width="20%"><img src="resources/images/logo.png" alt="LOGO" height="100"/></th>
+                    <th width="60%"><div id="header-text">Блог на JAVA (JSF + CDI + HIBERNATE)</div></th>
+                    <th width="20%">
+
+                        <div id="logon">
+                            <p><h:outputText value="#{mainpage.msgLogin}"/></p>
+
+                            <c:if test="#{not mainpage.getLogin and not mainpage.loginedUser}">
+                                <h:form>
+                                    <h:commandButton value="Войдите" action="#{mainpage.setGetLogin(true)}" /> или
+                                    <h:commandButton value="Зарегистрируйтесь" action="#{mainpage.moveToRegistration}" />
+                                </h:form>
+                            </c:if>
+
+                            <c:if test="#{mainpage.getLogin}">
+                                <h:form>
+                                    <h:inputText name="header_login_input" id="header_login_input" placeholder="Enter your login" type="text" value="#{mainpage.login}" size="10"/>
+                                    <h:inputSecret  name="header_passwd_input" id="header_passwd_input" placeholder="Enter your password" type="password" value="#{mainpage.password}" size="10"/>
+                                    <h:commandButton value="Войти" action="#{mainpage.moveToLogin(mainpage.login, mainpage.password)}" />
+                                </h:form>
+                            </c:if>
+
+                            <c:if test="#{mainpage.loginedUser}">
+                                <h:form>
+                                    <div>
+                                        <h:commandButton value="Добавить пост" action="#{mainpage.moveToAddNewPost}" />
+                                    </div>
+                                    <div>
+                                        <h:commandButton value="Выйти" action="#{mainpage.moveToQuit}" />
+                                    </div>
+                                </h:form>
+                            </c:if>
+
+                        </div>
+
+                    </th>
+                </tr>
+            </table>
+
+            <div id="main">
+                <h:dataTable value="#{mainpage.postList}" var="onePost" styleClass="post-table">
+                    <h:column>
+                        <h:form>
+                            <h:commandLink action="#{mainpage.moveToPost()}" value="Тема: #{onePost.title}" styleClass="post-title">
+                                <f:param name="postId" value="#{onePost.id}" />
+                                <f:param name="userId" value="#{onePost.userId.id}" />
+                                <f:param name="loginUserId" value="#{mainpage.getLoginUserId()}" />
+                            </h:commandLink><br/>
+                            <h:outputFormat value="Добавлено пользователем: {0}. Дата: {1}. Количество комментариев: {2}" styleClass="post-when">
+                                <f:param value="#{onePost.userId.login}" />
+                                <f:param value="#{onePost.publDate}" />
+                                <f:param value="#{onePost.comentSet.size()}" />
+                            </h:outputFormat><br/>
+                            <h:outputText value="#{onePost.body}" styleClass="post-body"/><p></p>
+                        </h:form>
+                    </h:column>
+                </h:dataTable>
+            </div>
+
+        </div>
+
+        <div id="footer">
+            Цопирайт, 2016
+        </div>
+
+    </h:body>
+</html>

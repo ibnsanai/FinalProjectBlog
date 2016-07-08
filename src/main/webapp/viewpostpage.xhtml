@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <title>Просмотр поста</title>
+</h:head>
+
+<h:body>
+    <h1>Просмотр поста</h1>
+    <div>
+        <h:form>
+            <h:outputText value="#{viewpostpage.onePost.title}" rendered="#{not viewpostpage.editMode}"/>
+            <h:inputText  value="#{viewpostpage.postTitle}"     rendered="#{viewpostpage.editMode}"/>
+            <h:commandButton value="Редактировать"
+                             rendered="#{viewpostpage.mayEdit and not viewpostpage.editMode}"
+                             action="#{viewpostpage.getEditModePage()}"
+                             style="margin-left: 20px;"/>
+            <h:commandButton value="Удалить"
+                             action="#{viewpostpage.delCurrentPost}"
+                             rendered="#{viewpostpage.mayEdit and not viewpostpage.editMode}"
+                             style="margin-left: 20px;"/>
+            <p></p>
+            <h:outputText    value="#{viewpostpage.onePost.body}" rendered="#{not viewpostpage.editMode}"/><br/>
+            <h:inputTextarea value="#{viewpostpage.postBody}"     rendered="#{viewpostpage.editMode}"/><br/>
+            <h:commandButton value="Сохранить изменения"          rendered="#{viewpostpage.editMode}"
+                             action="#{viewpostpage.editPost(viewpostpage.postTitle,viewpostpage.postBody)}"
+                             style="margin-left: 20px;"/>
+            <p></p>
+        </h:form>
+    </div>
+
+    <div>
+
+        <h:form>
+            <h:outputText value="Добавить коментарий:" rendered="#{viewpostpage.loginUserId > 0}"/><br/>
+            <h:inputTextarea value="#{viewpostpage.comentBody}" maxlength="1000" rendered="#{viewpostpage.loginUserId > 0}"/><br/>
+            <h:commandButton value="Добавить комментарий" action="#{viewpostpage.addNewComent(viewpostpage.comentBody)}" rendered="#{viewpostpage.loginUserId > 0}"/>
+        </h:form>
+
+        <c:if test="#{viewpostpage.loginUserId == 0}">
+            <p><h:outputText value="Для добавления коментариев требуется залогиниться в системе"/></p>
+        </c:if>
+
+        <h:form>
+            <p></p>
+            <h:commandButton value="На главную" action="mainpage?faces-redirect=true" />
+        </h:form>
+    </div>
+
+    <div>
+        <h:dataTable value="#{viewpostpage.onePost.comentSet}" var="oneComent">
+            <h:column>
+                <h:outputText value="Добавлен пользователем: #{oneComent.userId.login}. Время: #{oneComent.publDate}"/><br/>
+                <h:outputText value="#{oneComent.body}"/>
+            </h:column>
+        </h:dataTable>
+    </div>
+</h:body>
+</html>
