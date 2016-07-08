@@ -1,3 +1,5 @@
+/* Create need tables */
+
 CREATE TABLE `USERS` (
 	`ID` int NOT NULL,
 	`LOGIN` char(128) NOT NULL UNIQUE,
